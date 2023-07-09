@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+
+    body {
+
+margin-top:0px;
+margin-left:0px;
+    }
+  </style>
+</head>
+<body>
+
+  <svg id="my-svg" width="700" height="550" style="background-color: blue; margin-top:0px; margin-left:0px"></svg>
+
+ 
+  <div>
+    <button onclick="rectfun()">rect</button>
+    <button onclick="circlefun()">circle</button>
+    <button onclick="linefun()">line</button>
+    <button onclick="strightlinefun()">stright line</button>
+  </div>
+  <script>
+
+    const svg = document.getElementById('my-svg');
+    let startX, startY;
+   
+    let rectangle;
+    let rectangle2;
+    let rectselect=0
+
+    let circle;
+
+    let circle2;
+    let circleselect=0;
+
+
+    let line;
+    let line2;
+    let lineselect = 0;
+    let linepath = ''
+
+
+
+    let strightline;
+    let strightline2;
+
+    let strightlineselect = 0;
+
+
+    function rectfun(){
+
+      rectselect = 1;
+
+      circleselect = 0;
+      lineselect = 0;
+      strightlineselect = 0
+
+    }
+
+
+    function circlefun(){
+
+circleselect = 1;
+
+rectselect = 0;
+
+lineselect = 0;
+strightlineselect = 0
+}
+
+
+function linefun(){
+
+  circleselect = 0;
+
+rectselect = 0;
+
+lineselect = 1;
+
+strightlineselect = 0
+}
+
+
+
+function strightlinefun(){
+
+circleselect = 0;
+
+rectselect = 0;
+
+lineselect = 0;
+
+strightlineselect = 1
+}
+
+
+    function handleMouseDown(event) {
+
+      if(rectselect === 1){
+rectangle2 = true;
+      
+      startX = event.clientX;
+      startY = event.clientY;
+
+      rectangle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rectangle.setAttribute('stroke', 'black');
+      rectangle.setAttribute('fill', 'transparent');
+      svg.appendChild(rectangle);
+      rectangle.addEventListener("click", (event)=>{
+
+
+        event.target.setAttribute('fill', "red")
+
+      })
+    }
+
+    if(circleselect === 1){
+
+      startX = event.clientX;
+      startY = event.clientY;
+
+      circle2 = true;
+      circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('stroke', 'black');
+      circle.setAttribute('fill', 'transparent');
+
+      svg.appendChild(circle);
+
+
+      circle.addEventListener("click", (event)=>{
+
+
+event.target.setAttribute('fill', "red")
+
+})
+      
+    }
+  
+  
+  if (lineselect === 1){
+
+
+    line2 = true;
+    linepath = `M ${event.clientX} ${event.clientY}`;
+    line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    line.setAttribute('stroke', 'black');
+      line.setAttribute('fill', 'none');
+      line.setAttribute('d', linepath);
+
+      svg.appendChild(line);
+  }
+
+
+  if(strightlineselect===1){
+
+    strightline2 = true;
+
+    startX = event.clientX;
+      startY = event.clientY;
+
+      strightline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      strightline.setAttribute('stroke', 'black');
+
+      strightline.setAttribute('x1', startX);
+      strightline.setAttribute('y1', startY);
+      strightline.setAttribute('x2', startX);
+      strightline.setAttribute('y2', startY);
+
+      svg.appendChild(strightline);
+  }
+  
+  
+  
+  
+  
+  
+  }
+
+    function handleMouseMove(event) {
+      if (rectangle2 ===true) {
+        const width = Math.abs(event.clientX - startX);
+        const height = Math.abs(event.clientY - startY);
+
+        rectangle.setAttribute('x', Math.min(startX, event.clientX));
+        rectangle.setAttribute('y', Math.min(startY, event.clientY));
+        rectangle.setAttribute('width', width);
+        rectangle.setAttribute('height', height);
+      }
+
+
+      if (circle2 ===true) {
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+
+        radius = Math.sqrt(dx * dx + dy * dy);
+        circle.setAttribute('cx', startX);
+        circle.setAttribute('cy', startY);
+        circle.setAttribute('r', radius);
+      }
+
+
+      if (line2 ===true){
+
+        linepath += ` L ${event.clientX} ${event.clientY}`;
+        line.setAttribute('d', linepath);
+      }
+
+
+      if (strightline2 ===true){
+
+        strightline.setAttribute('x2', event.clientX);
+        strightline.setAttribute('y2', event.clientY);
+      }
+    }
+
+    function handleMouseUp() {
+      rectangle2 = false;
+      circle2 = false;
+      line2 = false;
+      strightline2 = false;
+    }
+
+    svg.addEventListener('mousedown', handleMouseDown);
+    svg.addEventListener('mousemove', handleMouseMove);
+    svg.addEventListener('mouseup', handleMouseUp);
+  </script>
+</body>
+</html>

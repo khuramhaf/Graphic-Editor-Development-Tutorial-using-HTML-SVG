@@ -16,6 +16,8 @@ margin-left:0px;
 </head>
 <body>
 
+  <h1>Online Graphic Editor</h1>
+
   <svg id="my-svg" width="700" height="550" style="background-color: blue; margin-top:0px; margin-left:0px"></svg>
 
  
@@ -28,7 +30,7 @@ margin-left:0px;
   </div>
   <script>
 
-    const svg = document.getElementById('my-svg');
+    let svg = document.getElementById('my-svg');
     let startX, startY;
 
 
@@ -119,9 +121,12 @@ strightlineselect = 1
 
       if(rectselect === 1){
 rectangle2 = true;
+
+
       
-      startX = event.clientX;
-      startY = event.clientY;
+      startX = event.clientX
+      startY = event.clientY
+
 
       rectangle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       rectangle.selectrect = 0;
@@ -239,10 +244,10 @@ event.target.selectrect = 0;
   
   
   if (lineselect === 1){
-
+    var rect = svg.getBoundingClientRect();
 
     line2 = true;
-    linepath = `M ${event.clientX} ${event.clientY}`;
+    linepath = `M ${event.clientX-rect.left} ${event.clientY-rect.top}`;
     line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     line.setAttribute('stroke', 'black');
@@ -254,7 +259,7 @@ event.target.selectrect = 0;
 
 
   if(strightlineselect===1){
-
+    var rect = svg.getBoundingClientRect();
     strightline2 = true;
 
     startX = event.clientX;
@@ -266,10 +271,10 @@ event.target.selectrect = 0;
       strightline.setAttribute('stroke', 'black');
       strightline.setAttribute('stroke-width', '5');
 
-      strightline.setAttribute('x1', startX);
-      strightline.setAttribute('y1', startY);
-      strightline.setAttribute('x2', startX);
-      strightline.setAttribute('y2', startY);
+      strightline.setAttribute('x1', startX-rect.left);
+      strightline.setAttribute('y1', startY-rect.top);
+      strightline.setAttribute('x2', startX-rect.left);
+      strightline.setAttribute('y2', startY-rect.top);
 
       svg.appendChild(strightline);
 
@@ -331,19 +336,23 @@ event.target.selectrect = 0;
 
     function handleMouseMove(event) {
       if (rectangle2 ===true) {
+        var rect = svg.getBoundingClientRect();
+        
         const width = Math.abs(event.clientX - startX);
         const height = Math.abs(event.clientY - startY);
 
-        rectangle.setAttribute('x', Math.min(startX, event.clientX));
-        rectangle.setAttribute('y', Math.min(startY, event.clientY));
+        rectangle.setAttribute('x', Math.min(startX-rect.left, event.clientX-rect.left));
+        rectangle.setAttribute('y', Math.min(startY-rect.top, event.clientY-rect.top));
         rectangle.setAttribute('width', width);
         rectangle.setAttribute('height', height);
       }
 
 
       if (circle2 ===true) {
-        const dx = event.clientX - startX;
-        const dy = event.clientY - startY;
+
+        var rect = svg.getBoundingClientRect();
+        const dx = event.clientX - startX-rect.left;
+        const dy = event.clientY - startY-rect.top;
 
         radius = Math.sqrt(dx * dx + dy * dy);
         circle.setAttribute('cx', startX);
@@ -354,15 +363,19 @@ event.target.selectrect = 0;
 
       if (line2 ===true){
 
-        linepath += ` L ${event.clientX} ${event.clientY}`;
+        var rect = svg.getBoundingClientRect();
+
+        linepath += ` L ${event.clientX-rect.left} ${event.clientY-rect.top}`;
         line.setAttribute('d', linepath);
       }
 
 
       if (strightline2 ===true){
 
-        strightline.setAttribute('x2', event.clientX);
-        strightline.setAttribute('y2', event.clientY);
+        var rect = svg.getBoundingClientRect();
+
+        strightline.setAttribute('x2', event.clientX-rect.left);
+        strightline.setAttribute('y2', event.clientY-rect.top);
       }
     }
 

@@ -20,6 +20,7 @@ margin-left:0px;
 
  
   <div>
+    <button onclick="selectfun()">select</button>
     <button onclick="rectfun()">rect</button>
     <button onclick="circlefun()">circle</button>
     <button onclick="linefun()">line</button>
@@ -29,6 +30,9 @@ margin-left:0px;
 
     const svg = document.getElementById('my-svg');
     let startX, startY;
+
+
+    let select;
    
     let rectangle;
     let rectangle2;
@@ -54,6 +58,7 @@ margin-left:0px;
 
 
     function rectfun(){
+      select = 0;
 
       rectselect = 1;
 
@@ -63,9 +68,19 @@ margin-left:0px;
 
     }
 
+function selectfun(){
 
+  select = 1;
+
+  circleselect = 0;
+
+rectselect = 0;
+
+lineselect = 0;
+strightlineselect = 0
+}
     function circlefun(){
-
+      select = 0;
 circleselect = 1;
 
 rectselect = 0;
@@ -76,7 +91,7 @@ strightlineselect = 0
 
 
 function linefun(){
-
+  select = 0;
   circleselect = 0;
 
 rectselect = 0;
@@ -89,7 +104,7 @@ strightlineselect = 0
 
 
 function strightlinefun(){
-
+  select = 0;
 circleselect = 0;
 
 rectselect = 0;
@@ -109,13 +124,54 @@ rectangle2 = true;
       startY = event.clientY;
 
       rectangle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rectangle.selectrect = 0;
       rectangle.setAttribute('stroke', 'black');
       rectangle.setAttribute('fill', 'transparent');
       svg.appendChild(rectangle);
-      rectangle.addEventListener("click", (event)=>{
+    
+
+      rectangle.addEventListener("mousedown", (event)=>{
 
 
-        event.target.setAttribute('fill', "red")
+    
+
+        if (select === 1){
+
+          startX = event.clientX;
+      startY = event.clientY;
+
+          event.target.selectrect = 1;
+        }
+
+
+      })
+
+
+      rectangle.addEventListener("mousemove", (event)=>{
+
+if (event.target.selectrect===1){
+
+
+  var x = event.clientX - svg.getBoundingClientRect().left;
+  var y = event.clientY - svg.getBoundingClientRect().top;
+  event.target.setAttribute('x', x - event.target.getAttribute('width')/2);
+  event.target.setAttribute('y', y - event.target.getAttribute('height')/2);
+
+}
+      })
+
+
+      rectangle.addEventListener("mouseup", (event)=>{
+
+        if (select ===1){
+
+
+
+     
+
+event.target.selectrect = 0;
+
+}
 
       })
     }
@@ -127,16 +183,55 @@ rectangle2 = true;
 
       circle2 = true;
       circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.selectrect = 0;
       circle.setAttribute('stroke', 'black');
       circle.setAttribute('fill', 'transparent');
 
       svg.appendChild(circle);
 
 
-      circle.addEventListener("click", (event)=>{
+      circle.addEventListener("mousedown", (event)=>{
 
 
-event.target.setAttribute('fill', "red")
+    
+
+if (select === 1){
+
+  startX = event.clientX;
+startY = event.clientY;
+
+  event.target.selectrect = 1;
+}
+
+
+})
+
+
+circle.addEventListener("mousemove", (event)=>{
+
+if (event.target.selectrect===1){
+
+
+var x = event.clientX - svg.getBoundingClientRect().left;
+var y = event.clientY - svg.getBoundingClientRect().top;
+event.target.setAttribute('cx', x);
+event.target.setAttribute('cy', y);
+
+}
+})
+
+
+circle.addEventListener("mouseup", (event)=>{
+
+if (select ===1){
+
+
+
+
+
+event.target.selectrect = 0;
+
+}
 
 })
       
@@ -166,7 +261,10 @@ event.target.setAttribute('fill', "red")
       startY = event.clientY;
 
       strightline = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+      strightline.selectrect = 0;
       strightline.setAttribute('stroke', 'black');
+      strightline.setAttribute('stroke-width', '5');
 
       strightline.setAttribute('x1', startX);
       strightline.setAttribute('y1', startY);
@@ -174,6 +272,54 @@ event.target.setAttribute('fill', "red")
       strightline.setAttribute('y2', startY);
 
       svg.appendChild(strightline);
+
+
+
+      
+      strightline.addEventListener("mousedown", (event)=>{
+
+console.log("helloworld");
+    
+
+if (select === 1){
+
+  startX = event.clientX;
+startY = event.clientY;
+
+  event.target.selectrect = 1;
+}
+
+
+})
+
+
+strightline.addEventListener("mousemove", (event)=>{
+
+if (event.target.selectrect===1){
+
+
+var x = event.clientX - svg.getBoundingClientRect().left;
+var y = event.clientY - svg.getBoundingClientRect().top;
+event.target.setAttribute('x2', x);
+event.target.setAttribute('y2', y);
+
+}
+})
+
+
+strightline.addEventListener("mouseup", (event)=>{
+
+if (select ===1){
+
+
+
+
+
+event.target.selectrect = 0;
+
+}
+
+})
   }
   
   

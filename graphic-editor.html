@@ -12,26 +12,42 @@
 
 
 
-  <h1>Draw Rectangles on Mouse Move in SVG</h1>
+  <h1>Move Drawn Rectangles</h1>
   <svg id="my-svg" width="700" height="450" style="background-color: blue; margin-top:0px; margin-left:0px"></svg>
+ 
+  <div>
 
+    <button onclick = "selectfun()">Select</button>
+    <button onclick = "rectfun()">Rect</button>
+  </div>
  
   </div>
   <script>
 
     let svg = document.getElementById('my-svg');
     let startX, startY;
-
-
- 
-   
+    
     let rectangle;
     let rectangle2;
+    let recttool=0
 
-    
+    let selecttool = 0;
+
+    function selectfun(){
+
+      selecttool = 1;
+      recttool = 0;
+    }
+
+
+    function rectfun(){
+
+      selecttool = 0;
+      recttool = 1;
+    }
 
     function handleMouseDown(event) {
-
+if(recttool ===1){
 rectangle2 = true;
 
 
@@ -41,14 +57,53 @@ rectangle2 = true;
 
 
       rectangle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rectangle.selectrect = 0;
       rectangle.setAttribute('stroke', 'black');
       rectangle.setAttribute('fill', 'transparent');
       svg.appendChild(rectangle);
   
+      rectangle.addEventListener("mousedown", (event)=>{
+
+
+    
+
+if (selecttool === 1){
+
+  startX = event.clientX;
+startY = event.clientY;
+
+  event.target.selectrect = 1;
+}
+
+
+})
+
+
+rectangle.addEventListener("mousemove", (event)=>{
+
+if (event.target.selectrect===1){
+
+
+var x = event.clientX - svg.getBoundingClientRect().left;
+var y = event.clientY - svg.getBoundingClientRect().top;
+event.target.setAttribute('x', x - event.target.getAttribute('width')/2);
+event.target.setAttribute('y', y - event.target.getAttribute('height')/2);
+
+}
+})
+
+
+rectangle.addEventListener("mouseup", (event)=>{
+
+if (selecttool ===1){
+event.target.selectrect = 0;
+
+}
+
+})
   
   
-  
-  
+} 
   
   }
 
@@ -59,8 +114,8 @@ rectangle2 = true;
         const width = Math.abs(event.clientX - startX);
         const height = Math.abs(event.clientY - startY);
 
-        rectangle.setAttribute('x', Math.min(startX, event.clientX-rect.left));
-        rectangle.setAttribute('y', Math.min(startY, event.clientY-rect.top));
+        rectangle.setAttribute('x', Math.min(startX-rect.left, event.clientX-rect.left));
+        rectangle.setAttribute('y', Math.min(startY-rect.top, event.clientY-rect.top));
         rectangle.setAttribute('width', width);
         rectangle.setAttribute('height', height);
       }

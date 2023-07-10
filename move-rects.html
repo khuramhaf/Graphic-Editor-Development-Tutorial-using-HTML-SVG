@@ -12,13 +12,15 @@
 
 
 
-  <h1>Move Drawn Rectangles</h1>
+  <h1>Fill Rectangles</h1>
   <svg id="my-svg" width="700" height="450" style="background-color: blue; margin-top:0px; margin-left:0px"></svg>
  
   <div>
 
     <button onclick = "selectfun()">Select</button>
     <button onclick = "rectfun()">Rect</button>
+    <button onclick = "fillrect()">FillRect</button>
+
   </div>
  
   </div>
@@ -30,6 +32,8 @@
     let rectangle;
     let rectangle2;
     let recttool=0
+    let setid = 0;
+    let getid;
 
     let selecttool = 0;
 
@@ -46,6 +50,12 @@
       recttool = 1;
     }
 
+
+    function fillrect(){
+document.getElementById(getid).setAttribute('fill', 'red');
+
+    }
+
     function handleMouseDown(event) {
 if(recttool ===1){
 rectangle2 = true;
@@ -60,7 +70,17 @@ rectangle2 = true;
       rectangle.selectrect = 0;
       rectangle.setAttribute('stroke', 'black');
       rectangle.setAttribute('fill', 'transparent');
+      rectangle.id = setid;
+      setid++;
       svg.appendChild(rectangle);
+
+
+      rectangle.addEventListener("click", (event)=>{
+
+        getid = event.target.id;
+
+        console.log(getid);
+      })
   
       rectangle.addEventListener("mousedown", (event)=>{
 

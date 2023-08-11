@@ -1,4 +1,4 @@
-# Graphic-Editor-Tutorial using HTML SVG | How to move rectangles on mouse move?
+# How to Draw and Move Rectangles on HTML SVG with Mouse Move for Graphics Editor
 
 You can watch video for this tutorial on youtube.
 
